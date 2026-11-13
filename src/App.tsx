@@ -77,6 +77,13 @@ export default function App() {
             <li>Garantia de pausas para descanso e hidratação sob altas temperaturas (comuns em Porto Murtinho).</li>
             <li>Respeito às normas de segurança na operação de maquinário agrícola.</li>
           </ul>
+
+          {/* Contato acrescentado do INAFC nesta secção */}
+          <div style={{ backgroundColor: '#e8f8f5', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #27ae60', marginBottom: '20px' }}>
+            <p style={{ margin: '0 0 5px 0', color: '#2c3e50', fontWeight: 'bold' }}>Precisa de orientações ou denúncias trabalhistas no campo?</p>
+            <p style={{ margin: '0', color: '#555' }}>Entre em contato com o suporte do INAFC Campo pelo WhatsApp: <strong>(67) 9.9611-5927</strong></p>
+          </div>
+
           <button 
             onClick={() => setTelaAtiva('home')}
             style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#27ae60', color: '#fff', border: 'none', borderRadius: '5px' }}
