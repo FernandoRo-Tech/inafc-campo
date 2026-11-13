@@ -126,475 +126,509 @@ export default function App() {
   );
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      {/* Cabeçalho */}
-      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ color: '#2c3e50', fontSize: '2.4rem', marginBottom: '8px' }}>INAFC Campo</h1>
-        <p style={{ color: '#7f8c8d', fontSize: '1.1rem', margin: 0 }}>
-          Suporte integral ao trabalhador rural em Porto Murtinho, MS
-        </p>
-      </header>
+    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        {/* Cabeçalho */}
+        <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <h1 style={{ color: '#2c3e50', fontSize: '2.4rem', marginBottom: '8px' }}>INAFC Campo</h1>
+          <p style={{ color: '#7f8c8d', fontSize: '1.1rem', margin: 0 }}>
+            Suporte integral ao trabalhador rural em Porto Murtinho, MS
+          </p>
+        </header>
 
-      {/* Menu Principal */}
-      {telaAtiva === 'home' && (
-        <div
-          style={{
-            maxWidth: '920px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '20px',
-          }}
-        >
+        {/* Menu Principal */}
+        {telaAtiva === 'home' && (
           <div
-            onClick={() => setTelaAtiva('ajuda')}
             style={{
-              backgroundColor: '#fff',
-              padding: '22px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              borderTop: '4px solid #c0392b',
+              maxWidth: '920px',
+              margin: '0 auto',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '20px',
             }}
           >
-            <h3 style={{ color: '#c0392b', marginTop: 0, marginBottom: '10px' }}>PRECISO DE AJUDA</h3>
-            <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
-              Corpo de Bombeiros, Polícia Militar e socorro para veículos nas estradas rurais de Porto Murtinho.
-            </p>
-          </div>
-
-          <div
-            onClick={() => setTelaAtiva('direitos')}
-            style={{
-              backgroundColor: '#fff',
-              padding: '22px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              borderTop: '4px solid #27ae60',
-            }}
-          >
-            <h3 style={{ color: '#27ae60', marginTop: 0, marginBottom: '10px' }}>CONHEÇA SEUS DIREITOS</h3>
-            <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
-              Aposentadoria rural, direitos trabalhistas, saúde, benefícios temporários, SENAR e direitos sindicais.
-            </p>
-          </div>
-
-          <div
-            onClick={() => setTelaAtiva('clima')}
-            style={{
-              backgroundColor: '#fff',
-              padding: '22px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              borderTop: '4px solid #2980b9',
-            }}
-          >
-            <h3 style={{ color: '#2980b9', marginTop: 0, marginBottom: '10px' }}>CLIMA E PREVISÃO DO TEMPO</h3>
-            <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
-              Acompanhamento meteorológico e acesso direto ao Foreca.com.
-            </p>
-          </div>
-
-          <div
-            onClick={() => setTelaAtiva('cotacoes')}
-            style={{
-              backgroundColor: '#fff',
-              padding: '22px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              borderTop: '4px solid #d35400',
-            }}
-          >
-            <h3 style={{ color: '#d35400', marginTop: 0, marginBottom: '10px' }}>COTAÇÕES E INSUMOS</h3>
-            <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
-              Tabela de referência da Agricultura Familiar (11/11/2026), fontes e simulador de faturamento.
-            </p>
-          </div>
-
-          <div
-            onClick={() => setTelaAtiva('contato')}
-            style={{
-              backgroundColor: '#fff',
-              padding: '22px',
-              borderRadius: '10px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-              cursor: 'pointer',
-              borderTop: '4px solid #16a085',
-            }}
-          >
-            <h3 style={{ color: '#16a085', marginTop: 0, marginBottom: '10px' }}>CONTATO E ASSISTÊNCIA</h3>
-            <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
-              Atendimento institucional INAFC: 67 - 9.9611-5927.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* 1. PRECISO DE AJUDA */}
-      {telaAtiva === 'ajuda' && (
-        <div
-          style={{
-            maxWidth: '860px',
-            margin: '0 auto',
-            backgroundColor: '#fff',
-            padding: '25px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-          }}
-        >
-          <h2 style={{ color: '#c0392b', marginTop: 0, marginBottom: '20px' }}>PRECISO DE AJUDA</h2>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div
+              onClick={() => setTelaAtiva('ajuda')}
               style={{
-                backgroundColor: '#fdf2f2',
-                padding: '16px',
-                borderRadius: '8px',
-                borderLeft: '4px solid #c0392b',
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #c0392b',
               }}
             >
-              <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-                ACIDENTES DE TRABALHO, ANIMAIS PEÇONHENTOS, TRÂNSITO, INCÊNDIOS EM PRÉDIOS E FLORESTAS:
+              <h3 style={{ color: '#c0392b', marginTop: 0, marginBottom: '10px' }}>PRECISO DE AJUDA</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Corpo de Bombeiros, Polícia Militar e socorro para veículos nas estradas rurais de Porto Murtinho.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setTelaAtiva('direitos')}
+              style={{
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #27ae60',
+              }}
+            >
+              <h3 style={{ color: '#27ae60', marginTop: 0, marginBottom: '10px' }}>CONHEÇA SEUS DIREITOS</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Aposentadoria rural, direitos trabalhistas, saúde, benefícios temporários, SENAR e direitos sindicais.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setTelaAtiva('clima')}
+              style={{
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #2980b9',
+              }}
+            >
+              <h3 style={{ color: '#2980b9', marginTop: 0, marginBottom: '10px' }}>CLIMA E PREVISÃO DO TEMPO</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Acompanhamento meteorológico e acesso direto ao Foreca.com.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setTelaAtiva('cotacoes')}
+              style={{
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #d35400',
+              }}
+            >
+              <h3 style={{ color: '#d35400', marginTop: 0, marginBottom: '10px' }}>COTAÇÕES E INSUMOS</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Tabela de referência da Agricultura Familiar (11/11/2026), fontes e simulador de faturamento.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setTelaAtiva('contato')}
+              style={{
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #16a085',
+              }}
+            >
+              <h3 style={{ color: '#16a085', marginTop: 0, marginBottom: '10px' }}>CONTATO E ASSISTÊNCIA</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Atendimento institucional INAFC: 67 - 9.9611-5927.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 1. PRECISO DE AJUDA */}
+        {telaAtiva === 'ajuda' && (
+          <div
+            style={{
+              maxWidth: '860px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+            }}
+          >
+            <h2 style={{ color: '#c0392b', marginTop: 0, marginBottom: '20px' }}>PRECISO DE AJUDA</h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div
+                style={{
+                  backgroundColor: '#fdf2f2',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  borderLeft: '4px solid #c0392b',
+                }}
+              >
+                <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                  ACIDENTES DE TRABALHO, ANIMAIS PEÇONHENTOS, TRÂNSITO, INCÊNDIOS EM PRÉDIOS E FLORESTAS:
+                </p>
+                <p style={{ margin: 0, color: '#333' }}>
+                  <strong>CORPO DE BOMBEIROS =&gt; 193</strong> &nbsp; e &nbsp; <strong>ZAP: 67 – 9.9663-4628</strong>
+                </p>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: '#f4f6f9',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  borderLeft: '4px solid #2c3e50',
+                }}
+              >
+                <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                  SEGURANÇA PÚBLICA – AMEAÇA – RISCO DE VIDA:
+                </p>
+                <p style={{ margin: 0, color: '#333' }}>
+                  <strong>POLÍCIA MILITAR: 190</strong> &nbsp; e &nbsp; <strong>ZAP: 67 – 9.9222-9573</strong>
+                </p>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: '#fef9e7',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  borderLeft: '4px solid #d35400',
+                }}
+              >
+                <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                  SOCORRO PARA VEÍCULO ACIDENTADO – QUEBRADO NAS ESTRADAS RURAIS DE PORTO MURTINHO:
+                </p>
+                <p style={{ margin: '0 0 8px 0', color: '#333' }}>
+                  <strong>ZAP: 67 – 9.9634-0952</strong>
+                </p>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#555', fontWeight: 'bold' }}>
+                  OBS: NO CASO DE SOCORRO A VEÍCULOS, A DEMANDA SERÁ REPASSADA PARA MECÂNICOS PARCEIROS PARA VIABILIZAR O ATENDIMENTO.
+                </p>
+              </div>
+            </div>
+
+            {renderVoltar()}
+          </div>
+        )}
+
+        {/* 2. CONHEÇA SEUS DIREITOS */}
+        {telaAtiva === 'direitos' && (
+          <div
+            style={{
+              maxWidth: '860px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+            }}
+          >
+            <h2 style={{ color: '#27ae60', marginTop: 0, marginBottom: '16px' }}>CONHEÇA SEUS DIREITOS</h2>
+            <p style={{ color: '#555', marginBottom: '14px' }}>
+              Principais áreas de orientação e garantia ao trabalhador rural:
+            </p>
+
+            <ul style={{ lineHeight: '1.8', color: '#2c3e50', paddingLeft: '20px', fontWeight: 'bold' }}>
+              <li>APOSENTADORIA DO TRABALHADOR: HOMEM e MULHER RURAIS</li>
+              <li>TRABALHISTAS - DIREITOS e DEVERES DOS TRABALHADORES</li>
+              <li>SAÚDE DO HOMEM E DAS MULHERES</li>
+              <li>BENEFÍCIOS PREVIDENCIÁRIOS TEMPORÁRIOS</li>
+              <li>CURSO DE FORMAÇÃO PROFISSIONAL RURAL DO SENAR</li>
+              <li>DIREITOS SINDICAIS – CATEGORIA DOS ASSALARIADOS RURAIS</li>
+            </ul>
+
+            <div
+              style={{
+                marginTop: '20px',
+                backgroundColor: '#e8f8f5',
+                padding: '15px',
+                borderRadius: '8px',
+                borderLeft: '4px solid #27ae60',
+              }}
+            >
+              <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                CONTATO E ASSISTÊNCIA — INAFC
               </p>
               <p style={{ margin: 0, color: '#333' }}>
-                <strong>CORPO DE BOMBEIROS =&gt; 193</strong> &nbsp; e &nbsp; <strong>ZAP: 67 – 9.9663-4628</strong>
+                WhatsApp: <strong>67 - 9.9611-5927</strong>
               </p>
             </div>
+
+            {renderVoltar()}
+          </div>
+        )}
+
+        {/* 3. CLIMA E PREVISÃO DO TEMPO */}
+        {telaAtiva === 'clima' && (
+          <div
+            style={{
+              maxWidth: '860px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+            }}
+          >
+            <h2 style={{ color: '#2980b9', marginTop: 0, marginBottom: '14px' }}>CLIMA E PREVISÃO DO TEMPO</h2>
+            <p style={{ color: '#555', lineHeight: '1.6', marginBottom: '18px' }}>
+              Acompanhe as condições meteorológicas e previsões para planejamento das atividades no campo em Porto Murtinho e região.
+            </p>
 
             <div
               style={{
-                backgroundColor: '#f4f6f9',
-                padding: '16px',
+                backgroundColor: '#eaf4fc',
+                padding: '18px',
                 borderRadius: '8px',
-                borderLeft: '4px solid #2c3e50',
+                borderLeft: '4px solid #2980b9',
+                marginBottom: '16px',
               }}
             >
-              <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-                SEGURANÇA PÚBLICA – AMEAÇA – RISCO DE VIDA:
+              <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                Consulta externa de previsão meteorológica:
               </p>
-              <p style={{ margin: 0, color: '#333' }}>
-                <strong>POLÍCIA MILITAR: 190</strong> &nbsp; e &nbsp; <strong>ZAP: 67 – 9.9222-9573</strong>
+              <a
+                href="https://www.foreca.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  backgroundColor: '#2980b9',
+                  color: '#fff',
+                  padding: '10px 18px',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                }}
+              >
+                Acessar FORECA.COM
+              </a>
+            </div>
+
+            {renderVoltar()}
+          </div>
+        )}
+
+        {/* 4. COTAÇÕES E INSUMOS */}
+        {telaAtiva === 'cotacoes' && (
+          <div
+            style={{
+              maxWidth: '980px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+            }}
+          >
+            <h2 style={{ color: '#d35400', marginTop: 0, marginBottom: '8px' }}>COTAÇÕES E INSUMOS</h2>
+            <h3 style={{ color: '#2c3e50', marginTop: 0, marginBottom: '12px' }}>
+              Tabela de preços de referência — Agricultura Familiar (Porto Murtinho – Mato Grosso do Sul)
+            </h3>
+
+            <div style={{ backgroundColor: '#f8f9fa', padding: '14px', borderRadius: '8px', marginBottom: '18px', color: '#444' }}>
+              <p style={{ margin: '0 0 6px 0' }}>
+                <strong>Data da pesquisa:</strong> 11 de novembro de 2026
+              </p>
+              <p style={{ margin: '0 0 6px 0' }}>
+                <strong>Finalidade:</strong> estabelecer preços de venda dos produtos da agricultura familiar, considerando animais vivos, leite in natura e produtos comercializados diretamente pelos produtores.
+              </p>
+              <p style={{ margin: 0, fontSize: '0.92rem' }}>
+                A pesquisa reúne indicadores agropecuários, referências de atacado e preços de produtos artesanais. Como nem todos os produtos possuem cotação pública específica para Porto Murtinho, os valores sugeridos abaixo são propostas iniciais para negociação, sujeitas à validação com produtores e compradores locais.
               </p>
             </div>
 
-            <div
-              style={{
-                backgroundColor: '#fef9e7',
-                padding: '16px',
-                borderRadius: '8px',
-                borderLeft: '4px solid #d35400',
-              }}
-            >
-              <p style={{ margin: '0 0 6px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-                SOCORRO PARA VEÍCULO ACIDENTADO – QUEBRADO NAS ESTRADAS RURAIS DE PORTO MURTINHO:
-              </p>
-              <p style={{ margin: '0 0 8px 0', color: '#333' }}>
-                <strong>ZAP: 67 – 9.9634-0952</strong>
-              </p>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#555', fontWeight: 'bold' }}>
-                OBS: NO CASO DE SOCORRO A VEÍCULOS, A DEMANDA SERÁ REPASSADA PARA MECÂNICOS PARCEIROS PARA VIABILIZAR O ATENDIMENTO.
-              </p>
+            {/* 1. Tabela de cotação */}
+            <h3 style={{ color: '#2c3e50', marginBottom: '10px' }}>1. Tabela de cotação</h3>
+            <div style={{ overflowX: 'auto', marginBottom: '12px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#27ae60', color: '#fff', textAlign: 'left' }}>
+                    <th style={{ padding: '10px' }}>Produto</th>
+                    <th style={{ padding: '10px' }}>Unidade de venda</th>
+                    <th style={{ padding: '10px' }}>Referência pesquisada</th>
+                    <th style={{ padding: '10px' }}>Preço sugerido*</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => (
+                    <tr key={item.id} style={{ borderBottom: '1px solid #e0e0e0' }}>
+                      <td style={{ padding: '10px', fontWeight: 'bold' }}>{item.nome}</td>
+                      <td style={{ padding: '10px' }}>{item.unidade}</td>
+                      <td style={{ padding: '10px' }}>{item.referencia}</td>
+                      <td style={{ padding: '10px', color: '#27ae60', fontWeight: 'bold' }}>
+                        {formatarMoeda(item.precoSugerido)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
 
-          {renderVoltar()}
-        </div>
-      )}
-
-      {/* 2. CONHEÇA SEUS DIREITOS */}
-      {telaAtiva === 'direitos' && (
-        <div
-          style={{
-            maxWidth: '860px',
-            margin: '0 auto',
-            backgroundColor: '#fff',
-            padding: '25px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-          }}
-        >
-          <h2 style={{ color: '#27ae60', marginTop: 0, marginBottom: '16px' }}>CONHEÇA SEUS DIREITOS</h2>
-          <p style={{ color: '#555', marginBottom: '14px' }}>
-            Principais áreas de orientação e garantia ao trabalhador rural:
-          </p>
-
-          <ul style={{ lineHeight: '1.8', color: '#2c3e50', paddingLeft: '20px', fontWeight: 'bold' }}>
-            <li>APOSENTADORIA DO TRABALHADOR: HOMEM e MULHER RURAIS</li>
-            <li>TRABALHISTAS - DIREITOS e DEVERES DOS TRABALHADORES</li>
-            <li>SAÚDE DO HOMEM E DAS MULHERES</li>
-            <li>BENEFÍCIOS PREVIDENCIÁRIOS TEMPORÁRIOS</li>
-            <li>CURSO DE FORMAÇÃO PROFISSIONAL RURAL DO SENAR</li>
-            <li>DIREITOS SINDICAIS – CATEGORIA DOS ASSALARIADOS RURAIS</li>
-          </ul>
-
-          <div
-            style={{
-              marginTop: '20px',
-              backgroundColor: '#e8f8f5',
-              padding: '15px',
-              borderRadius: '8px',
-              borderLeft: '4px solid #27ae60',
-            }}
-          >
-            <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-              CONTATO E ASSISTÊNCIA — INAFC
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '22px' }}>
+              *Preços sugeridos por estimativa comercial, e não cotações comprovadas em Porto Murtinho. Não incluem frete, tributos, perdas, embalagem adicional ou margens de intermediários, quando aplicáveis.
             </p>
-            <p style={{ margin: 0, color: '#333' }}>
-              WhatsApp: <strong>67 - 9.9611-5927</strong>
-            </p>
-          </div>
 
-          {renderVoltar()}
-        </div>
-      )}
-
-      {/* 3. CLIMA E PREVISÃO DO TEMPO */}
-      {telaAtiva === 'clima' && (
-        <div
-          style={{
-            maxWidth: '860px',
-            margin: '0 auto',
-            backgroundColor: '#fff',
-            padding: '25px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-          }}
-        >
-          <h2 style={{ color: '#2980b9', marginTop: 0, marginBottom: '14px' }}>CLIMA E PREVISÃO DO TEMPO</h2>
-          <p style={{ color: '#555', lineHeight: '1.6', marginBottom: '18px' }}>
-            Acompanhe as condições meteorológicas e previsões para planejamento das atividades no campo em Porto Murtinho e região.
-          </p>
-
-          <div
-            style={{
-              backgroundColor: '#eaf4fc',
-              padding: '18px',
-              borderRadius: '8px',
-              borderLeft: '4px solid #2980b9',
-              marginBottom: '16px',
-            }}
-          >
-            <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-              Consulta externa de previsão meteorológica:
-            </p>
-            <a
-              href="https://www.foreca.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-block',
-                backgroundColor: '#2980b9',
-                color: '#fff',
-                padding: '10px 18px',
-                borderRadius: '6px',
-                textDecoration: 'none',
-                fontWeight: 'bold',
-              }}
-            >
-              Acessar FORECA.COM
-            </a>
-          </div>
-
-          {renderVoltar()}
-        </div>
-      )}
-
-      {/* 4. COTAÇÕES E INSUMOS */}
-      {telaAtiva === 'cotacoes' && (
-        <div
-          style={{
-            maxWidth: '980px',
-            margin: '0 auto',
-            backgroundColor: '#fff',
-            padding: '25px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-          }}
-        >
-          <h2 style={{ color: '#d35400', marginTop: 0, marginBottom: '8px' }}>COTAÇÕES E INSUMOS</h2>
-          <h3 style={{ color: '#2c3e50', marginTop: 0, marginBottom: '12px' }}>
-            Tabela de preços de referência — Agricultura Familiar (Porto Murtinho – Mato Grosso do Sul)
-          </h3>
-
-          <div style={{ backgroundColor: '#f8f9fa', padding: '14px', borderRadius: '8px', marginBottom: '18px', color: '#444' }}>
-            <p style={{ margin: '0 0 6px 0' }}>
-              <strong>Data da pesquisa:</strong> 11 de novembro de 2026
-            </p>
-            <p style={{ margin: '0 0 6px 0' }}>
-              <strong>Finalidade:</strong> estabelecer preços de venda dos produtos da agricultura familiar, considerando animais vivos, leite in natura e produtos comercializados diretamente pelos produtores.
-            </p>
-            <p style={{ margin: 0, fontSize: '0.92rem' }}>
-              A pesquisa reúne indicadores agropecuários, referências de atacado e preços de produtos artesanais. Como nem todos os produtos possuem cotação pública específica para Porto Murtinho, os valores sugeridos abaixo são propostas iniciais para negociação, sujeitas à validação com produtores e compradores locais.
-            </p>
-          </div>
-
-          {/* 1. Tabela de cotação */}
-          <h3 style={{ color: '#2c3e50', marginBottom: '10px' }}>1. Tabela de cotação</h3>
-          <div style={{ overflowX: 'auto', marginBottom: '12px' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem' }}>
-              <thead>
-                <tr style={{ backgroundColor: '#27ae60', color: '#fff', textAlign: 'left' }}>
-                  <th style={{ padding: '10px' }}>Produto</th>
-                  <th style={{ padding: '10px' }}>Unidade de venda</th>
-                  <th style={{ padding: '10px' }}>Referência pesquisada</th>
-                  <th style={{ padding: '10px' }}>Preço sugerido*</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => (
-                  <tr key={item.id} style={{ borderBottom: '1px solid #e0e0e0' }}>
-                    <td style={{ padding: '10px', fontWeight: 'bold' }}>{item.nome}</td>
-                    <td style={{ padding: '10px' }}>{item.unidade}</td>
-                    <td style={{ padding: '10px' }}>{item.referencia}</td>
-                    <td style={{ padding: '10px', color: '#27ae60', fontWeight: 'bold' }}>
-                      {formatarMoeda(item.precoSugerido)}
-                    </td>
+            {/* 2. Fontes utilizadas na pesquisa */}
+            <h3 style={{ color: '#2c3e50', marginBottom: '10px' }}>2. Fontes utilizadas na pesquisa</h3>
+            <div style={{ overflowX: 'auto', marginBottom: '12px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#2c3e50', color: '#fff', textAlign: 'left' }}>
+                    <th style={{ padding: '10px' }}>Produto</th>
+                    <th style={{ padding: '10px' }}>Fonte e localidade</th>
+                    <th style={{ padding: '10px' }}>Data da referência</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => (
+                    <tr key={item.id} style={{ borderBottom: '1px solid #e0e0e0' }}>
+                      <td style={{ padding: '10px' }}>{item.nome}</td>
+                      <td style={{ padding: '10px' }}>{item.fonte}</td>
+                      <td style={{ padding: '10px' }}>{item.dataRef}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '22px' }}>
-            *Preços sugeridos por estimativa comercial, e não cotações comprovadas em Porto Murtinho. Não incluem frete, tributos, perdas, embalagem adicional ou margens de intermediários, quando aplicáveis.
-          </p>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '24px' }}>
+              Observações metodológicas: para o queijo, a faixa combina referência fiscal de Goiás e levantamento de varejo; não é uma cotação direta ao produtor. Para o doce de leite, a referência de R$ 23,32 corresponde aproximadamente ao preço por pote em kit de seis unidades, enquanto R$ 29,90 é uma referência de produto artesanal no varejo. A referência de galinha caipira é fiscal, e não comprovação de uma negociação efetiva. O mel tem poucas observações próprias de MS, segundo o índice consultado.
+            </p>
 
-          {/* 2. Fontes utilizadas na pesquisa */}
-          <h3 style={{ color: '#2c3e50', marginBottom: '10px' }}>2. Fontes utilizadas na pesquisa</h3>
-          <div style={{ overflowX: 'auto', marginBottom: '12px' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.92rem' }}>
-              <thead>
-                <tr style={{ backgroundColor: '#2c3e50', color: '#fff', textAlign: 'left' }}>
-                  <th style={{ padding: '10px' }}>Produto</th>
-                  <th style={{ padding: '10px' }}>Fonte e localidade</th>
-                  <th style={{ padding: '10px' }}>Data da referência</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => (
-                  <tr key={item.id} style={{ borderBottom: '1px solid #e0e0e0' }}>
-                    <td style={{ padding: '10px' }}>{item.nome}</td>
-                    <td style={{ padding: '10px' }}>{item.fonte}</td>
-                    <td style={{ padding: '10px' }}>{item.dataRef}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            {/* 3. Simulador de preços e faturamento */}
+            <h3 style={{ color: '#2c3e50', marginBottom: '8px' }}>3. Simulador de preços e faturamento</h3>
+            <p style={{ color: '#555', marginBottom: '14px' }}>
+              Informe a quantidade de cada produto para estimar o valor bruto de venda, utilizando os preços sugeridos acima:
+            </p>
 
-          <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '24px' }}>
-            Observações metodológicas: para o queijo, a faixa combina referência fiscal de Goiás e levantamento de varejo; não é uma cotação direta ao produtor. Para o doce de leite, a referência de R$ 23,32 corresponde aproximadamente ao preço por pote em kit de seis unidades, enquanto R$ 29,90 é uma referência de produto artesanal no varejo. A referência de galinha caipira é fiscal, e não comprovação de uma negociação efetiva. O mel tem poucas observações próprias de MS, segundo o índice consultado.
-          </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px', marginBottom: '18px' }}>
+              {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => {
+                const qtd = parseFloat((quantidades[item.id] || '0').replace(',', '.'));
+                const subtotal = isNaN(qtd) || qtd <= 0 ? 0 : qtd * item.precoSugerido;
 
-          {/* 3. Simulador de preços e faturamento */}
-          <h3 style={{ color: '#2c3e50', marginBottom: '8px' }}>3. Simulador de preços e faturamento</h3>
-          <p style={{ color: '#555', marginBottom: '14px' }}>
-            Informe a quantidade de cada produto para estimar o valor bruto de venda, utilizando os preços sugeridos acima:
-          </p>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px', marginBottom: '18px' }}>
-            {PRODUTOS_AGRICULTURA_FAMILIAR.map((item) => {
-              const qtd = parseFloat((quantidades[item.id] || '0').replace(',', '.'));
-              const subtotal = isNaN(qtd) || qtd <= 0 ? 0 : qtd * item.precoSugerido;
-
-              return (
-                <div
-                  key={item.id}
-                  style={{
-                    border: '1px solid #dcdcdc',
-                    borderRadius: '8px',
-                    padding: '12px',
-                    backgroundColor: '#fcfcfc',
-                  }}
-                >
-                  <div style={{ fontWeight: 'bold', color: '#2c3e50', marginBottom: '4px' }}>{item.nome}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '8px' }}>
-                    Unitário: {formatarMoeda(item.precoSugerido)} / {item.unidade}
-                  </div>
-                  <input
-                    type="number"
-                    min="0"
-                    step="any"
-                    placeholder={`Qtd (${item.unidade})`}
-                    value={quantidades[item.id] || ''}
-                    onChange={(e) => handleQuantidadeChange(item.id, e.target.value)}
+                return (
+                  <div
+                    key={item.id}
                     style={{
-                      width: '100%',
-                      padding: '8px',
-                      boxSizing: 'border-box',
-                      borderRadius: '5px',
-                      border: '1px solid #bbb',
-                      marginBottom: '6px',
+                      border: '1px solid #dcdcdc',
+                      borderRadius: '8px',
+                      padding: '12px',
+                      backgroundColor: '#fcfcfc',
                     }}
-                  />
-                  <div style={{ fontSize: '0.9rem', color: '#27ae60', fontWeight: 'bold' }}>
-                    Subtotal: {formatarMoeda(subtotal)}
+                  >
+                    <div style={{ fontWeight: 'bold', color: '#2c3e50', marginBottom: '4px' }}>{item.nome}</div>
+                    <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '8px' }}>
+                      Unitário: {formatarMoeda(item.precoSugerido)} / {item.unidade}
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      step="any"
+                      placeholder={`Qtd (${item.unidade})`}
+                      value={quantidades[item.id] || ''}
+                      onChange={(e) => handleQuantidadeChange(item.id, e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '8px',
+                        boxSizing: 'border-box',
+                        borderRadius: '5px',
+                        border: '1px solid #bbb',
+                        marginBottom: '6px',
+                      }}
+                    />
+                    <div style={{ fontSize: '0.9rem', color: '#27ae60', fontWeight: 'bold' }}>
+                      Subtotal: {formatarMoeda(subtotal)}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
+            <div
+              style={{
+                backgroundColor: '#e8f8f5',
+                padding: '16px',
+                borderRadius: '8px',
+                borderLeft: '4px solid #27ae60',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              <strong style={{ fontSize: '1.1rem', color: '#2c3e50' }}>
+                Estimativa de Valor Bruto de Venda:
+              </strong>
+              <strong style={{ fontSize: '1.3rem', color: '#27ae60' }}>
+                {formatarMoeda(totalSimulado)}
+              </strong>
+            </div>
+
+            {renderVoltar()}
+          </div>
+        )}
+
+        {/* 5. CONTATO E ASSISTÊNCIA */}
+        {telaAtiva === 'contato' && (
           <div
             style={{
-              backgroundColor: '#e8f8f5',
-              padding: '16px',
-              borderRadius: '8px',
-              borderLeft: '4px solid #27ae60',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '10px',
+              maxWidth: '860px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
             }}
           >
-            <strong style={{ fontSize: '1.1rem', color: '#2c3e50' }}>
-              Estimativa de Valor Bruto de Venda:
-            </strong>
-            <strong style={{ fontSize: '1.3rem', color: '#27ae60' }}>
-              {formatarMoeda(totalSimulado)}
-            </strong>
+            <h2 style={{ color: '#16a085', marginTop: 0, marginBottom: '14px' }}>CONTATO E ASSISTÊNCIA</h2>
+            <div
+              style={{
+                backgroundColor: '#e8f8f5',
+                padding: '18px',
+                borderRadius: '8px',
+                borderLeft: '4px solid #16a085',
+              }}
+            >
+              <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+                INAFC — Porto Murtinho, MS
+              </p>
+              <p style={{ margin: 0, fontSize: '1.05rem', color: '#333' }}>
+                Telefone / WhatsApp: <strong>67 - 9.9611-5927</strong>
+              </p>
+            </div>
+
+            {renderVoltar()}
           </div>
+        )}
+      </div>
 
-          {renderVoltar()}
-        </div>
-      )}
-
-      {/* 5. CONTATO E ASSISTÊNCIA */}
-      {telaAtiva === 'contato' && (
-        <div
-          style={{
-            maxWidth: '860px',
-            margin: '0 auto',
-            backgroundColor: '#fff',
-            padding: '25px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
-          }}
-        >
-          <h2 style={{ color: '#16a085', marginTop: 0, marginBottom: '14px' }}>CONTATO E ASSISTÊNCIA</h2>
-          <div
-            style={{
-              backgroundColor: '#e8f8f5',
-              padding: '18px',
-              borderRadius: '8px',
-              borderLeft: '4px solid #16a085',
-            }}
+      {/* Rodapé com identificação do desenvolvedor */}
+      <footer
+        style={{
+          maxWidth: '920px',
+          width: '100%',
+          margin: '40px auto 10px auto',
+          paddingTop: '16px',
+          borderTop: '1px solid #dcdcdc',
+          textAlign: 'center',
+          fontSize: '0.88rem',
+          color: '#666',
+          lineHeight: '1.6',
+          boxSizing: 'border-box',
+        }}
+      >
+        <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', color: '#2c3e50' }}>
+          Desenvolvido por Fernando Luiz Rodrigues
+        </p>
+        <p style={{ margin: '0 0 4px 0' }}>
+          Tecnologia da Informação — Universidade Federal de Mato Grosso do Sul (UFMS)
+        </p>
+        <p style={{ margin: 0 }}>
+          Fercell Informática • Porto Murtinho, MS •{' '}
+          <a
+            href="mailto:fernando.l.rodrigues@ufms.br"
+            style={{ color: '#27ae60', textDecoration: 'none' }}
           >
-            <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: '#2c3e50' }}>
-              INAFC — Porto Murtinho, MS
-            </p>
-            <p style={{ margin: 0, fontSize: '1.05rem', color: '#333' }}>
-              Telefone / WhatsApp: <strong>67 - 9.9611-5927</strong>
-            </p>
-          </div>
-
-          {renderVoltar()}
-        </div>
-      )}
+            fernando.l.rodrigues@ufms.br
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }
