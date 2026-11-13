@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProdutoCotacao {
   id: string;
@@ -8,6 +8,22 @@ interface ProdutoCotacao {
   precoSugerido: number;
   fonte: string;
   dataRef: string;
+}
+
+interface CadastroInafc {
+  nomeCompleto: string;
+  cpf: string;
+  dataNascimento: string;
+  telefone: string;
+  email: string;
+  endereco: string;
+  comunidadeOuFazenda: string;
+  pontoReferencia: string;
+  municipio: string;
+  perfilRural: string;
+  atividades: string;
+  demandaPrincipal: string;
+  observacoes: string;
 }
 
 const PRODUTOS_AGRICULTURA_FAMILIAR: ProdutoCotacao[] = [
@@ -85,13 +101,46 @@ const PRODUTOS_AGRICULTURA_FAMILIAR: ProdutoCotacao[] = [
   },
 ];
 
+const CADASTRO_INICIAL: CadastroInafc = {
+  nomeCompleto: '',
+  cpf: '',
+  dataNascimento: '',
+  telefone: '',
+  email: '',
+  endereco: '',
+  comunidadeOuFazenda: '',
+  pontoReferencia: '',
+  municipio: 'Porto Murtinho, MS',
+  perfilRural: 'Agricultor(a) Familiar',
+  atividades: '',
+  demandaPrincipal: 'Orientação Trabalhista / Previdenciária',
+  observacoes: '',
+};
+
+const CHAVE_STORAGE_CADASTRO = 'inafc_campo_cadastro_usuario_v1';
+
 function formatarMoeda(valor: number): string {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 export default function App() {
-  const [telaAtiva, setTelaAtiva] = useState<'home' | 'ajuda' | 'direitos' | 'clima' | 'cotacoes' | 'contato'>('home');
+  const [telaAtiva, setTelaAtiva] = useState<'home' | 'ajuda' | 'direitos' | 'clima' | 'cotacoes' | 'cadastro' | 'contato'>('home');
   const [quantidades, setQuantidades] = useState<Record<string, string>>({});
+  const [cadastro, setCadastro] = useState<CadastroInafc>(CADASTRO_INICIAL);
+  const [mensagemCadastro, setMensagemCadastro] = useState<string>('');
+  const [erroCadastro, setErroCadastro] = useState<string>('');
+
+  useEffect(() => {
+    try {
+      const salvo = localStorage.getItem(CHAVE_STORAGE_CADASTRO);
+      if (salvo) {
+        const parsed = JSON.parse(salvo) as Partial<CadastroInafc>;
+        setCadastro((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch {
+      // Ignora erro de leitura de storage
+    }
+  }, []);
 
   const totalSimulado = PRODUTOS_AGRICULTURA_FAMILIAR.reduce((acc, item) => {
     const qtd = parseFloat((quantidades[item.id] || '0').replace(',', '.'));
@@ -104,6 +153,75 @@ export default function App() {
       ...prev,
       [id]: valor,
     }));
+  };
+
+  const handleCadastroChange = (campo: keyof CadastroInafc, valor: string) => {
+    setErroCadastro('');
+    setMensagemCadastro('');
+    setCadastro((prev) => ({
+      ...prev,
+      [campo]: valor,
+    }));
+  };
+
+  const montarMensagemWhatsApp = (dados: CadastroInafc) => {
+    const texto = [
+      '*CADASTRO INAFC CAMPO*',
+      '',
+      '*DADOS PESSOAIS*',
+      `Nome: ${dados.nomeCompleto}`,
+      `CPF: ${dados.cpf || 'Não informado'}`,
+      `Data de nascimento: ${dados.dataNascimento || 'Não informada'}`,
+      `Telefone/WhatsApp: ${dados.telefone}`,
+      `E-mail: ${dados.email || 'Não informado'}`,
+      '',
+      '*ENDEREÇO E LOCALIZAÇÃO*',
+      `Endereço: ${dados.endereco}`,
+      `Comunidade / Assentamento / Fazenda: ${dados.comunidadeOuFazenda || 'Não informado'}`,
+      `Ponto de referência: ${dados.pontoReferencia || 'Não informado'}`,
+      `Município: ${dados.municipio}`,
+      '',
+      '*PERFIL E NECESSIDADES*',
+      `Perfil rural: ${dados.perfilRural}`,
+      `Principais atividades / culturas / criações: ${dados.atividades || 'Não informado'}`,
+      `Demanda principal: ${dados.demandaPrincipal}`,
+      `Observações: ${dados.observacoes || 'Nenhuma'}`,
+    ].join('\n');
+
+    return encodeURIComponent(texto);
+  };
+
+  const handleSalvarCadastro = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!cadastro.nomeCompleto.trim() || !cadastro.telefone.trim() || !cadastro.endereco.trim()) {
+      setErroCadastro('Preencha ao menos Nome Completo, Telefone/WhatsApp e Endereço.');
+      return;
+    }
+
+    try {
+      localStorage.setItem(CHAVE_STORAGE_CADASTRO, JSON.stringify(cadastro));
+    } catch {
+      // Continua mesmo se o navegador bloquear storage
+    }
+
+    setErroCadastro('');
+    setMensagemCadastro('Cadastro salvo neste aparelho! Você também pode enviá-lo agora pelo WhatsApp do INAFC.');
+  };
+
+  const handleEnviarWhatsAppCadastro = () => {
+    if (!cadastro.nomeCompleto.trim() || !cadastro.telefone.trim() || !cadastro.endereco.trim()) {
+      setErroCadastro('Preencha ao menos Nome Completo, Telefone/WhatsApp e Endereço antes de enviar.');
+      return;
+    }
+
+    try {
+      localStorage.setItem(CHAVE_STORAGE_CADASTRO, JSON.stringify(cadastro));
+    } catch {
+      // Continua mesmo se o navegador bloquear storage
+    }
+
+    const url = `https://wa.me/5567996115927?text=${montarMensagemWhatsApp(cadastro)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const renderVoltar = () => (
@@ -126,11 +244,21 @@ export default function App() {
   );
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <div
+      style={{
+        backgroundColor: '#f8f9fa',
+        minHeight: '100vh',
+        padding: '20px',
+        fontFamily: 'Arial, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
       <div>
         {/* Cabeçalho */}
         <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ color: '#2c3e50', fontSize: '2.4rem', marginBottom: '8px' }}>INAFC Campo</h1>
+          <h1 style={{ color: '#2c3e50', fontSize: '2.4rem', marginBottom: '8px' }}>Campo INAFC</h1>
           <p style={{ color: '#7f8c8d', fontSize: '1.1rem', margin: 0 }}>
             Suporte integral ao trabalhador rural em Porto Murtinho, MS
           </p>
@@ -212,6 +340,23 @@ export default function App() {
               <h3 style={{ color: '#d35400', marginTop: 0, marginBottom: '10px' }}>COTAÇÕES E INSUMOS</h3>
               <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
                 Tabela de referência da Agricultura Familiar (11/11/2026), fontes e simulador de faturamento.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setTelaAtiva('cadastro')}
+              style={{
+                backgroundColor: '#fff',
+                padding: '22px',
+                borderRadius: '10px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                borderTop: '4px solid #8e44ad',
+              }}
+            >
+              <h3 style={{ color: '#8e44ad', marginTop: 0, marginBottom: '10px' }}>CADASTRO INAFC</h3>
+              <p style={{ color: '#555', fontSize: '0.95rem', margin: 0 }}>
+                Ficha de cadastro do trabalhador ou produtor rural: dados pessoais, endereço e demandas.
               </p>
             </div>
 
@@ -347,6 +492,10 @@ export default function App() {
                 WhatsApp: <strong>67 - 9.9611-5927</strong>
               </p>
             </div>
+
+            <p style={{ marginTop: '16px', marginBottom: 0, fontSize: '0.82rem', color: '#7f8c8d' }}>
+              Desenvolvido por Fernando Luiz Rodrigues — Tecnologia da Informação (UFMS) • Fercell Informática
+            </p>
 
             {renderVoltar()}
           </div>
@@ -564,7 +713,270 @@ export default function App() {
           </div>
         )}
 
-        {/* 5. CONTATO E ASSISTÊNCIA */}
+        {/* 5. CADASTRO INAFC */}
+        {telaAtiva === 'cadastro' && (
+          <div
+            style={{
+              maxWidth: '900px',
+              margin: '0 auto',
+              backgroundColor: '#fff',
+              padding: '25px',
+              borderRadius: '10px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.08)',
+            }}
+          >
+            <h2 style={{ color: '#8e44ad', marginTop: 0, marginBottom: '8px' }}>CADASTRO INAFC</h2>
+            <p style={{ color: '#555', marginTop: 0, marginBottom: '20px', lineHeight: '1.5' }}>
+              Preencha seus dados pessoais, endereço rural e informações de atividade para registro e acompanhamento pelo INAFC em Porto Murtinho, MS.
+            </p>
+
+            <form onSubmit={handleSalvarCadastro}>
+              {/* Bloco 1: Dados Pessoais */}
+              <h3 style={{ color: '#2c3e50', fontSize: '1.1rem', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '6px' }}>
+                1. Dados Pessoais
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Nome Completo *
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.nomeCompleto}
+                    onChange={(e) => handleCadastroChange('nomeCompleto', e.target.value)}
+                    placeholder="Ex.: João da Silva"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    CPF
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.cpf}
+                    onChange={(e) => handleCadastroChange('cpf', e.target.value)}
+                    placeholder="000.000.000-00"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Data de Nascimento
+                  </label>
+                  <input
+                    type="date"
+                    value={cadastro.dataNascimento}
+                    onChange={(e) => handleCadastroChange('dataNascimento', e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Telefone / WhatsApp *
+                  </label>
+                  <input
+                    type="tel"
+                    value={cadastro.telefone}
+                    onChange={(e) => handleCadastroChange('telefone', e.target.value)}
+                    placeholder="(67) 9.0000-0000"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    E-mail
+                  </label>
+                  <input
+                    type="email"
+                    value={cadastro.email}
+                    onChange={(e) => handleCadastroChange('email', e.target.value)}
+                    placeholder="seuemail@exemplo.com"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Bloco 2: Endereço */}
+              <h3 style={{ color: '#2c3e50', fontSize: '1.1rem', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '6px' }}>
+                2. Endereço e Localização
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: '20px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Endereço / Estrada Rural *
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.endereco}
+                    onChange={(e) => handleCadastroChange('endereco', e.target.value)}
+                    placeholder="Rua, número, bairro ou estrada"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Comunidade / Assentamento / Fazenda
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.comunidadeOuFazenda}
+                    onChange={(e) => handleCadastroChange('comunidadeOuFazenda', e.target.value)}
+                    placeholder="Nome da comunidade ou propriedade"
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Ponto de Referência
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.pontoReferencia}
+                    onChange={(e) => handleCadastroChange('pontoReferencia', e.target.value)}
+                    placeholder="Ex.: próximo à ponte, escola, porteira..."
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Município / UF
+                  </label>
+                  <input
+                    type="text"
+                    value={cadastro.municipio}
+                    onChange={(e) => handleCadastroChange('municipio', e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Bloco 3: Outros Quesitos (Perfil, Atividades e Demandas) */}
+              <h3 style={{ color: '#2c3e50', fontSize: '1.1rem', marginBottom: '12px', borderBottom: '1px solid #eee', paddingBottom: '6px' }}>
+                3. Perfil Rural, Atividades e Necessidades
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px', marginBottom: '16px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Categoria / Perfil
+                  </label>
+                  <select
+                    value={cadastro.perfilRural}
+                    onChange={(e) => handleCadastroChange('perfilRural', e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box', backgroundColor: '#fff' }}
+                  >
+                    <option value="Agricultor(a) Familiar">Agricultor(a) Familiar</option>
+                    <option value="Trabalhador(a) Assalariado(a) Rural">Trabalhador(a) Assalariado(a) Rural</option>
+                    <option value="Pecuarista / Criador(a)">Pecuarista / Criador(a)</option>
+                    <option value="Aposentado(a) / Pensionista Rural">Aposentado(a) / Pensionista Rural</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                    Demanda Principal
+                  </label>
+                  <select
+                    value={cadastro.demandaPrincipal}
+                    onChange={(e) => handleCadastroChange('demandaPrincipal', e.target.value)}
+                    style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box', backgroundColor: '#fff' }}
+                  >
+                    <option value="Orientação Trabalhista / Previdenciária">Orientação Trabalhista / Previdenciária</option>
+                    <option value="Comercialização / Cotações Agricultura Familiar">Comercialização / Cotações Agricultura Familiar</option>
+                    <option value="Formação Profissional / Cursos SENAR">Formação Profissional / Cursos SENAR</option>
+                    <option value="Assistência Técnica / Extensão Rural">Assistência Técnica / Extensão Rural</option>
+                    <option value="Apoio / Informações Gerais">Apoio / Informações Gerais</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                  Principais Atividades, Culturas ou Criações
+                </label>
+                <input
+                  type="text"
+                  value={cadastro.atividades}
+                  onChange={(e) => handleCadastroChange('atividades', e.target.value)}
+                  placeholder="Ex.: mandioca, leite, mel, ovinos, galinha caipira, queijo, doce de leite, suínos..."
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '18px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '4px', color: '#333' }}>
+                  Observações Complementares
+                </label>
+                <textarea
+                  rows={3}
+                  value={cadastro.observacoes}
+                  onChange={(e) => handleCadastroChange('observacoes', e.target.value)}
+                  placeholder="Informe dúvidas, necessidades específicas ou dados adicionais..."
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #bbb', boxSizing: 'border-box', fontFamily: 'Arial, sans-serif' }}
+                />
+              </div>
+
+              {erroCadastro && (
+                <div style={{ backgroundColor: '#fdf2f2', color: '#c0392b', padding: '12px', borderRadius: '6px', borderLeft: '4px solid #c0392b', marginBottom: '14px', fontWeight: 'bold' }}>
+                  {erroCadastro}
+                </div>
+              )}
+
+              {mensagemCadastro && (
+                <div style={{ backgroundColor: '#e8f8f5', color: '#1e8449', padding: '12px', borderRadius: '6px', borderLeft: '4px solid #27ae60', marginBottom: '14px', fontWeight: 'bold' }}>
+                  {mensagemCadastro}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <button
+                  type="submit"
+                  style={{
+                    padding: '12px 20px',
+                    cursor: 'pointer',
+                    backgroundColor: '#8e44ad',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Salvar Cadastro no Aparelho
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleEnviarWhatsAppCadastro}
+                  style={{
+                    padding: '12px 20px',
+                    cursor: 'pointer',
+                    backgroundColor: '#16a085',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Enviar Ficha pelo WhatsApp INAFC (67 - 9.9611-5927)
+                </button>
+              </div>
+            </form>
+
+            {renderVoltar()}
+          </div>
+        )}
+
+        {/* 6. CONTATO E ASSISTÊNCIA */}
         {telaAtiva === 'contato' && (
           <div
             style={{
